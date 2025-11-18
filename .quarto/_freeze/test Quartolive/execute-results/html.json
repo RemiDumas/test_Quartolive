@@ -1,0 +1,17 @@
+{
+  "hash": "b3bc0b5963786bd8c68514a68a0d8cdb",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: Grandile\nengine: knitr\nformat: live-html\nresources:\n  - \"donnees\"\nwebr:\n  render-df: gt-interactive\n  packages:\n    - dplyr\n    - ggplot2\n  resources:\n    - donnees/grandile.rds\n---\n\n::: {.cell}\n\n:::\n\n\n\n\n\n## Description des données\n\n**Grandile** comporte 5418 individus, caractérisés par 12 variables.\n\n### Les variables\n\n\n::: {.cell}\n```{webr}\ngrandile <- readRDS('donnees/grandile.rds') \ncolnames(grandile)\n```\n:::\n\n\n\n### Indicateurs statistiques\n\n\n::: {.cell}\n```{webr}\nsummary(grandile)\n```\n:::\n\n\n\n## Distribution des revenus selon la PCS\n\n\n\n::: {.cell}\n```{webr}\n#| label: rev_pcs\ngraph_revenusPCS <- grandile %>% \n  ggplot(aes(x = pcs, y = REVENU, fill = pcs)) +\n  geom_boxplot(color = \"grey20\", size = 0.8)\ngraph_revenusPCS\n```\n:::\n\n\n\n## Modèle linéaire\n\n\n::: {.cell}\n```{webr}\nfit = lm(REVENU ~ PATRIMOINE, data = grandile)\nsummary(fit)\nplot(fit)\n```\n:::\n\n\n\n## Extrait de table\n\n\n::: {#tbl-grandile .cell}\n```{webr}\n#| label: tbl-grandile\n\ntab <- grandile %>% \n  select(IDENT, MODCOHA, pcs, REVENU)\ntab\n```\n:::\n",
+    "supporting": [
+      "test-Quartolive_files"
+    ],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

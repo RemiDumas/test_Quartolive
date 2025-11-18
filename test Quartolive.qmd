@@ -1,0 +1,71 @@
+---
+title: Grandile
+engine: knitr
+format: live-html
+resources:
+  - "donnees"
+webr:
+  render-df: gt-interactive
+  packages:
+    - dplyr
+    - ggplot2
+  resources:
+    - donnees/grandile.rds
+---
+
+{{< include ./_extensions/r-wasm/live/_knitr.qmd >}}
+
+```{r}
+#| include: false
+#| label: packdata
+
+library('dplyr')
+library('ggplot2')
+
+grandile <- readRDS('donnees/grandile.rds') 
+
+```
+
+## Description des données
+
+**Grandile** comporte `r nrow(grandile)` individus, caractérisés par `r ncol(grandile)` variables.
+
+### Les variables
+```{webr}
+grandile <- readRDS('donnees/grandile.rds') 
+colnames(grandile)
+```
+
+### Indicateurs statistiques
+```{webr}
+summary(grandile)
+```
+
+## Distribution des revenus selon la PCS
+
+```{webr}
+#| label: rev_pcs
+graph_revenusPCS <- grandile %>% 
+  ggplot(aes(x = pcs, y = REVENU, fill = pcs)) +
+  geom_boxplot(color = "grey20", size = 0.8)
+graph_revenusPCS
+```
+
+## Modèle linéaire
+```{webr}
+fit = lm(REVENU ~ PATRIMOINE, data = grandile)
+summary(fit)
+plot(fit)
+```
+
+## Extrait de table
+```{webr}
+#| label: tbl-grandile
+#| tbl-cap: Revenus à Grandile
+tab <- grandile %>% 
+  select(IDENT, MODCOHA, pcs, REVENU)
+tab
+```
+
+
+
