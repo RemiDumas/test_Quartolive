@@ -1,7 +1,14 @@
 ---
-title: Grandile
+title: Grandile, un territoire aux multiples facettes
+author: Cefiloup
+date: today
+date-format: DD/MM/YYYY
 engine: knitr
-format: live-html
+format: 
+  live-html:
+    embed-resources: true
+    theme: cosmo
+lang: fr
 resources:
   - "donnees"
 webr:
@@ -47,7 +54,7 @@ summary(grandile)
 #| label: rev_pcs
 graph_revenusPCS <- grandile %>% 
   ggplot(aes(x = pcs, y = REVENU, fill = pcs)) +
-  geom_boxplot(color = "grey20", size = 0.8)
+  geom_boxplot(color = "grey20", size = 0.5)
 graph_revenusPCS
 ```
 

@@ -1,0 +1,130 @@
+---
+format:
+  live-revealjs:
+    theme: simple
+    embed-resources: true
+title: Grandile, un territoire aux multiples facettes
+author: Cefiloup
+date: today
+date-format: DD/MM/YYYY
+engine: knitr
+resources:
+  - "donnees"
+webr:
+  render-df: gt-interactive
+  packages:
+    - dplyr
+    - ggplot2
+  resources:
+    - donnees/grandile.rds
+  cell-options:
+    autorun: true
+    fig-width: 11
+    fig-height: 5
+---
+
+{{< include ./_extensions/r-wasm/live/_knitr.qmd >}}
+
+
+```{r}
+#| include: false
+#| label: packdata
+
+library('dplyr')
+library('ggplot2')
+
+grandile <- readRDS('donnees/grandile.rds') 
+
+```
+
+## Description des données
+
+**Grandile** comporte `r nrow(grandile)` individus, caractérisés par `r ncol(grandile)` variables.
+
+## Les variables
+
+```{webr}
+grandile <- readRDS('donnees/grandile.rds') 
+colnames(grandile)
+```
+
+## Indicateurs statistiques
+```{webr}
+summary(grandile)
+```
+
+## Distribution des revenus selon la PCS
+
+```{webr}
+#| label: rev_pcs
+graph_revenusPCS <- grandile %>% 
+  ggplot(aes(x = pcs, y = REVENU, fill = pcs)) +
+  geom_boxplot(color = "grey20", size = 0.5)
+graph_revenusPCS
+```
+
+## Modèle linéaire
+```{webr}
+fit = lm(REVENU ~ PATRIMOINE, data = grandile)
+summary(fit)
+plot(fit)
+```
+
+## Extrait de table
+```{webr}
+#| label: tbl-grandile
+#| tbl-cap: Revenus à Grandile
+tab <- grandile %>% 
+  select(IDENT, MODCOHA, pcs, REVENU)
+tab
+```
+
+## Scrollable output
+
+```{webr}
+mod <- lm(mpg ~ cyl, data = mtcars)
+plot(mod)
+summary(mod)
+```
+
+## Read Only
+
+```{webr}
+#| edit: false
+mod <- lm(mpg ~ cyl, data = mtcars)
+summary(mod)
+```
+
+## Exercises
+
+```{webr}
+#| exercise: ex1
+#| caption: Exercise 1
+1 + 2 + 3 + ______
+```
+
+```{webr}
+#| exercise: ex1
+#| check: true
+if (.result == 10) {
+  list(message = "Great work!", correct = TRUE)
+} else {
+  list(message = "That's incorrect.", correct = FALSE)
+}
+```
+
+::: { .hint exercise="ex1" }
+
+You should make the expression sum to 10.
+
+:::
+
+::: { .solution exercise="ex1" }
+
+**Solution:**
+
+```r
+1 + 2 + 3 + 4
+```
+
+:::
